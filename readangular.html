@@ -12,7 +12,7 @@
     <div class="container">
         <h1>Dolgozók</h1>
         <form action="" method="post">
-            <input type="search" name="kifejezes" id="kifejezes">
+            <input type="search" ng-model="kifejezes" id="kifejezes">
         </form>
         <p><a href="felvitel.php">Új dologzó felvitele</a></p>
         
@@ -23,12 +23,12 @@
                 <th>Email</th>
                 <th>Művelet</th>
             </tr>
-            <tr ng-repeat="dolgozo in dolgozok">
+            <tr ng-repeat="dolgozo in dolgozok | filter:search">
                 <td>{{dolgozo.nev}}</td>
-                <td>{{dolgozo.email}}</td>
                 <td>{{dolgozo.mobil}}</td>
-                <td><a href="torles.php"></a>Törlés</td>
-                <td><a href="modositas.php"></a>Módosítás</td>
+                <td>{{dolgozo.email}}</td>
+                <td><a href="torles.php?id={{user.id}}"></a>Törlés</td>
+                <td><a href="modositas.php?id={{user.id}}"></a>Módosítás</td>
             </tr>
         </table>
     </div>
@@ -36,7 +36,7 @@
 <script>
     let app = angular.module('ReadApp', []);
     app.controller('ReadController', function($scope, $http){
-        $http.get('dolgozok.json').then(function(response){
+        $http.get('http://localhost/Dolgozok/vegpont.php').then(function(response){
             $scope.dolgozok = response.data;
         })
     });
