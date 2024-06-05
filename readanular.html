@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <link rel="stylesheet" href="stilus.css">
+
+    <title>Document</title>
+</head>
+<body  ng-app="ReadApp" ng-controller="ReadController">
+    <div class="container">
+        <h1>Dolgozók</h1>
+        <form action="" method="post">
+            <input type="search" name="kifejezes" id="kifejezes">
+        </form>
+        <p><a href="felvitel.php">Új dologzó felvitele</a></p>
+        
+        <table>
+            <tr>
+                <th>Név</th>
+                <th>Mobil</th>
+                <th>Email</th>
+                <th>Művelet</th>
+            </tr>
+            <tr ng-repeat="dolgozo in dolgozok">
+                <td>{{dolgozo.nev}}</td>
+                <td>{{dolgozo.email}}</td>
+                <td>{{dolgozo.mobil}}</td>
+                <td><a href="torles.php"></a>Törlés</td>
+                <td><a href="modositas.php"></a>Módosítás</td>
+            </tr>
+        </table>
+    </div>
+</body>
+<script>
+    let app = angular.module('ReadApp', []);
+    app.controller('ReadController', function($scope, $http){
+        $http.get('dolgozok.json').then(function(response){
+            $scope.dolgozok = response.data;
+        })
+    });
+</script>
+</html>

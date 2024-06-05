@@ -17,5 +17,14 @@ if($_SERVER['REQUEST_METHOD'] === 'GET'){
         mysqli_close($dbconn);
         header('Content-Type:application/json; charset=utf-8');
         echo json_encode($dolgozok, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-    }catch{};
-}
+
+        file_put_contents('dolgozo.json', json_encode($dolgozok, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    }catch(Exception $e){
+        http_response_code(500);
+        echo "HIBA " . $e->getMessage();
+    };
+}else{
+    //nem megengedett kérés
+    http_response_code(405);
+};
+?>

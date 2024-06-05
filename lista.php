@@ -1,7 +1,7 @@
 <?php
 require("kapcsolat.php");
 
-$kifejezes = isset($_POST['kifejezes']) ? mysqli_real_escape_string(dbconn, $_POST['kifejezes']) : "";
+$kifejezes = isset($_POST['kifejezes']) ? mysqli_real_escape_string($dbconn, $_POST['kifejezes']) : "";
 $sql = "SELECT * FROM dolgozok 
         WHERE (
             nev LIKE '%{$kifejezes}%'
