@@ -27,9 +27,11 @@ if(isset($_POST['rendben'])){
         //módosítás
         $id = (int)$_POST['id'];
         $sql = "UPDATE dolgozok
-                SET
-                ";
+                SET nev = '{$nev}', mobil = '{$mobil}', email = '{$email}'
+                WHERE id = {$id}";
         mysqli_query($dbconn, $sql);
+        header("Location: lista.php");
+        exit();
     }
 }
 //űrlap kitöltése
