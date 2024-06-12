@@ -4,7 +4,7 @@ if(isset($_GET['id'])){
     //echo $_GET['id'];
     require("kapcsolat.php");
     $id = (int)$_GET['id'];
-    $sql = "DELETE FROM dolgozok
+    $sql = "DELETE FROM autok
             WHERE id = {$id}";
 
     if($myslqi_query($dbconn, $sql)){

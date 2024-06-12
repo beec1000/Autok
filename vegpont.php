@@ -3,22 +3,22 @@ require_once 'kapcsolat.php';
 
 if($_SERVER['REQUEST_METHOD'] === 'GET'){
     try{
-        $sql = "SELECT * FROM dolgozok";
+        $sql = "SELECT * FROM autok";
         $eredmeny = mysqli_query($dbconn, $sql);
         if(!$eredmeny){
             http_response_code(500); //belső szerver hiba
             die("HIBA a kiválasztásnál:" . mysqli_error($dbconn));
         }
-        $dolgozok = array();
+        $autok = array();
         while($sor = mysqli_fetch_assoc($eredmeny)){
-            $dolgozok[]= $sor;
+            $autok[]= $sor;
         }
 
         mysqli_close($dbconn);
         header('Content-Type:application/json; charset=utf-8');
-        echo json_encode($dolgozok, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        echo json_encode($autok, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
-        file_put_contents('dolgozo.json', json_encode($dolgozok, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        file_put_contents('auto.json', json_encode($autok, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
     }catch(Exception $e){
         http_response_code(500);
         echo "HIBA " . $e->getMessage();

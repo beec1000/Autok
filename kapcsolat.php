@@ -7,7 +7,7 @@ header("Content-Type:text/html; charset=utf-8");
 define("DBHOST", $_ENV['DBHOST']);
 define("DBUSER", $_ENV['DBUSER']);
 define("DBPASS", $_ENV['DBPASS']);
-define("DBNAME", $_ENV['DBNAME']);
+define("DBNAME", "autok");
 
 $dbconn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
 

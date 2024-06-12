@@ -8,16 +8,22 @@ if(!isset($_REQUEST['id'])){
 require("kapcsolat.php");
 
 if(isset($_POST['rendben'])){
-    $nev = htmlspecialchars(trim(ucwords(strtolower($_POST['nev']))));
-    $mobil = htmlspecialchars(trim($_POST['mobil']));
-    $email = htmlspecialchars(trim(strtolower($_POST['email'])));
+    $fajta = htmlspecialchars(trim(ucwords(strtolower($_POST['nev']))));
+    $tipus = htmlspecialchars(trim(ucwords(strtolower($_POST['nev']))));
+    $gyartas = htmlspecialchars(trim($_POST['mobil']));
+    $km = htmlspecialchars(trim($_POST['mobil']));
+    $ara = htmlspecialchars(trim($_POST['mobil']));
 
-    if(empty($nev)) $hibak[] = "Nem adott meg nevet!";
-    elseif(strlen($nev) < 3)$hibak[] = "Az ön neve gyanúsan rövid!";
+    if(empty($fajta)) $hibak[] = "Nem adott meg gyártó nevet!";
+    elseif(strlen($fajta) < 3)$hibak[] = "A gyártó neve gyanúsan rövid!";
 
-    if(empty($mobil) && strlen($mobil) < 9) $hibak[] = "Helytelen a mobil szám formátum!";
+    if(empty($tipus)) $hibak[] = "Nem adott meg típust!";
 
-    if(!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) $hibak[] = "Helytelen e-mail!";
+    if(empty($gyartas) && strlen($mobil) < 4) $hibak[] = "Helytelen az évszám formátum!";
+
+    if(empty($km)) $hibak[] = "Helytelen a kilométer formátum!";
+
+    if(empty($ara)) $hibak[] = "Helytelen az ár formátum!";
 
     if(isset($hibak)){
         $kimenet .= "<ul>";
@@ -26,8 +32,8 @@ if(isset($_POST['rendben'])){
     }else{ 
         //módosítás
         $id = (int)$_POST['id'];
-        $sql = "UPDATE dolgozok
-                SET nev = '{$nev}', mobil = '{$mobil}', email = '{$email}'
+        $sql = "UPDATE autok
+                SET fajta = '{$fajta}', tipus = '{$tipus}', gyartas = '{$gyartas}', km = '{$km}', ara = '{ara}'
                 WHERE id = {$id}";
         mysqli_query($dbconn, $sql);
         header("Location: lista.php");
@@ -36,14 +42,16 @@ if(isset($_POST['rendben'])){
 }
 //űrlap kitöltése
 $id = (int)$_GET['id'];
-$sql = "SELECT * FROM dolgozok
+$sql = "SELECT * FROM autok
         WHERE id = {$id}";
 $eredmeny = mysqli_query($dbconn, $sql);
 $sor = mysqli_fetch_assoc($eredmeny);
 //var_dumb($sor);
-$nev = $sor['nev'];
-$mobil = $sor['mobil'];
-$email = $sor['email'];
+$fajta = $sor['fajta'];
+$tipus = $sor['tipus'];
+$gyartas = $sor['gyartas'];
+$km = $sor['km'];
+$ara = $sor['ara'];
 
 ?>
 <!DOCTYPE html>
@@ -56,7 +64,7 @@ $email = $sor['email'];
 </head>
 <body>
     <div class="container">
-        <h1>Dolgozó adatainak módosítása</h1>
+        <h1>Autó adatainak módosítása</h1>
         <form action="" method="post">
             <?php
             if(isset($kimenet)) print($kimenet);
@@ -64,21 +72,28 @@ $email = $sor['email'];
             <input type="hidden" name="id" value="<?php print $id ?>">
             
             <p>
-                <label for="nev">Név</label>
-                <input type="text" name="nev" value="<?php print $nev ?>">
+                <label for="fajta">Fajta</label>
+                <input type="text" name="fajta" value="<?php print $fajta ?>">
             </p>
             <p>
-                <label for="mobil">Mobil</label>
-                <input type="tel" name="mobil" value="<?php print $mobil ?>">
+                <label for="tipus">Típus</label>
+                <input type="text" name="tipus" value="<?php print $tipus ?>">
             </p>
             <p>
-                <label for="email">Email</label>
-                <input type="email" name="email" value="<?php print $email ?>">
+                <label for="gyartas">Email</label>
+                <input type="text" name="gyartas" value="<?php print $gyartas ?>">
             </p>
-
+            <p>
+                <label for="km">KM</label>
+                <input type="number" name="km" value="<?php print $km ?>">
+            </p>
+            <p>
+                <label for="ara">Ára</label>
+                <input type="number" name="ara" value="<?php print $ara ?>">
+            </p>
             <input type="submit" value="Módosítás" name="rednben">
         </form>
-        <p><a href="lista.php"></a>Vissza a listához</p>
+        <p><a href="lista.php">Vissza a listához</a></p>
     </div>
 </body>
 </html>

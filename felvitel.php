@@ -1,16 +1,22 @@
 <?php
 
 if(isset($_POST['rendben'])){
-    $nev = htmlspecialchars(trim(ucwords(strtolower($_POST['nev']))));
-    $mobil = htmlspecialchars(trim($_POST['mobil']));
-    $email = htmlspecialchars(trim(strtolower($_POST['email'])));
+    $fajta = htmlspecialchars(trim(ucwords(strtolower($_POST['nev']))));
+    $tipus = htmlspecialchars(trim(ucwords(strtolower($_POST['nev']))));
+    $gyartas = htmlspecialchars(trim($_POST['mobil']));
+    $km = htmlspecialchars(trim($_POST['mobil']));
+    $ara = htmlspecialchars(trim($_POST['mobil']));
 
-    if(empty($nev)) $hibak[] = "Nem adott meg nevet!";
-    elseif(strlen($nev) < 3)$hibak[] = "Az ön neve gyanúsan rövid!";
+    if(empty($fajta)) $hibak[] = "Nem adott meg gyártó nevet!";
+    elseif(strlen($fajta) < 3)$hibak[] = "A gyártó neve gyanúsan rövid!";
 
-    if(empty($mobil) && strlen($mobil) < 9) $hibak[] = "Helytelen a mobil szám formátum!";
+    if(empty($tipus)) $hibak[] = "Nem adott meg típust!";
 
-    if(!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) $hibak[] = "Helytelen e-mail!";
+    if(empty($gyartas) && strlen($mobil) < 4) $hibak[] = "Helytelen az évszám formátum!";
+
+    if(empty($km)) $hibak[] = "Helytelen a kilométer formátum!";
+
+    if(empty($ara)) $hibak[] = "Helytelen az ár formátum!";
 
     if(isset($hibak)){
         $kimenet .= "<ul>";
@@ -18,10 +24,10 @@ if(isset($_POST['rendben'])){
         $kimenet .= "</ul>";
     }else{
         require("kapcsolat.php");
-        $sql = "INSERT INTO dolgozok
-                (nev, mobil, email)
+        $sql = "INSERT INTO autok
+                (fajta, tipus, gyartas, km, ara)
                 VALUES 
-                ('{$nev}', '{$mobil}', '{$email}')";
+                ('{$fajta}', '{$tipus}', '{$gyartas}', '{$km}', '{$ara}')";
         mysqli_query($dbconn, $sql);
     }
 }
@@ -33,31 +39,39 @@ if(isset($_POST['rendben'])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="stilus.css">
-    <title>Document</title>
+    <title>Autók</title>
 </head>
 <body>
     <div class="container">
-        <h1>Új dolgozó felvitele</h1>
+        <h1>Új autó felvitele</h1>
         <form action="" method="post">
             <?php
             if(isset($kimenet)) print($kimenet);
             ?>
             <p>
-                <label for="nev">Név</label>
-                <input type="text" name="nev">
+                <label for="fajta">Fajta</label>
+                <input type="text" name="fajta">
             </p>
             <p>
-                <label for="mobil">Mobil</label>
-                <input type="tel" name="mobil">
+                <label for="tipus">Típus</label>
+                <input type="text" name="tipus">
             </p>
             <p>
-                <label for="email">Email</label>
-                <input type="email" name="email">
+                <label for="gyartas">Gyártás</label>
+                <input type="text" name="gyartas">
+            </p>
+            <p>
+                <label for="km">KM</label>
+                <input type="number" name="km">
+            </p>
+            <p>
+                <label for="ara">Ára</label>
+                <input type="number" name="ara">
             </p>
 
             <input type="submit" value="Felvitel" name="rednben">
         </form>
-        <p><a href="lista.php"></a>Vissza a listához</p>
+        <p><a href="lista.php">Vissza a listához</a></p>
     </div>
 </body>
 </html>

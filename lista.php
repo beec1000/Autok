@@ -2,31 +2,39 @@
 require("kapcsolat.php");
 
 $kifejezes = isset($_POST['kifejezes']) ? mysqli_real_escape_string($dbconn, $_POST['kifejezes']) : "";
-$sql = "SELECT * FROM dolgozok 
+$sql = "SELECT * FROM autok 
         WHERE (
-            nev LIKE '%{$kifejezes}%'
+            fajta LIKE '%{$kifejezes}%'
             OR
-            mobil LIKE '%{$kifejezes}%'
+            tipus LIKE '%{$kifejezes}%'
             OR
-            email LIKE '%{$kifejezes}%'
+            gyartas LIKE '%{$kifejezes}%'
+            OR
+            km LIKE '%{$kifejezes}%'
+            OR
+            ara LIKE '%{$kifejezes}%'
         )";
 
 $eredmeny = mysqli_query($dbconn, $sql);
 $kimenet = "<table>
                 <tr>
-                    <th>Név</th>
-                    <th>Mobil</th>
-                    <th>Email</th>
+                    <th>Fajta</th>
+                    <th>Típus</th>
+                    <th>Gyártás</th>
+                    <th>KM</th>
+                    <th>Ára</th>
                     <th>Művelet</th>
                 </tr>";
 
 while ($sor = mysqli_fetch_assoc($eredmeny)){
     $kimenet .= "<tr>
-                    <td>{$sor['nev']}</td>
-                    <td>{$sor['mobil']}</td>
-                    <td>{$sor['email']}</td>
-                    <td><a href=\"torles.php?id={$sor['id']}\"></a>Törlés</td>
-                    <td><a href=\"modositas.php?id={$sor['id']}\"></a>Módosítás</td>
+                    <td>{$sor['fajta']}</td>
+                    <td>{$sor['tipus']}</td>
+                    <td>{$sor['gyartas']}</td>
+                    <td>{$sor['km']}</td>
+                    <td>{$sor['ara']}</td>
+                    <td><a href=\"torles.php?id={$sor['id']}\">Törlés</a> |
+                    <a href=\"modositas.php?id={$sor['id']}\">Módosítás</a></td>
                 </tr>";
 }
 $kimenet .="</table>";
@@ -36,16 +44,16 @@ $kimenet .="</table>";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dolgozók</title>
+    <title>Autók</title>
     <link rel="stylesheet" href="stilus.css">
 </head>
 <body>
     <div class="container">
-        <h1>Dolgozók</h1>
+        <h1>Autók</h1>
         <form action="" method="post">
             <input type="search" name="kifejezes" id="kifejezes">
         </form>
-        <p><a href="felvitel.php">Új dologzó felvitele</a></p>
+        <p><a href="felvitel.php">Új autó felvétele</a></p>
         <!--PHP Kimenet jön ide-->
             <?php print $kimenet;?>
         
